@@ -17,7 +17,7 @@ class CreateShortenedLinksTable extends Migration
             $table->increments('id');
 
             $table->unsignedInteger('author_id');
-            $table->string('original_url');
+            $table->text('original_url');
             $table->string('shortened_url');
             $table->unsignedInteger('views_count');
             $table->string('token', 191)->unique();
