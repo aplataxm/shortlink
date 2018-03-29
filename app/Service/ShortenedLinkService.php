@@ -36,8 +36,7 @@ class ShortenedLinkService
      */
     public function incrementCountOfViews(Link $link)
     {
-        $link->views_count++;
-        $link->save();
+        $link->increment('views_count');
 
         return $link;
     }
@@ -65,6 +64,16 @@ class ShortenedLinkService
         }
 
         return $link;
+    }
+
+    /**
+     * @param string $token
+     *
+     * @return Link|null
+     */
+    public function getLinkOrNullByToken(string $token)
+    {
+        return Link::where('token', $token)->first();
     }
 
     /**

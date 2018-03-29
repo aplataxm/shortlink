@@ -2,12 +2,30 @@
 
 namespace App\Service;
 
+use App\Service\ShortenedLinkService;
+
 /**
  * Class ShortenedLinkGenerator
  * @package App\Service
  */
 class ShortenedLinkGenerator
 {
+
+    /**
+     * @var ShortenedLinkService
+    */
+    protected $linkService;
+
+    /**
+     * ShortenedLinkGenerator constructor.
+     *
+     * @param ShortenedLinkService $linkService
+     */
+    public function __construct(ShortenedLinkService $linkService)
+    {
+        $this->linkService = $linkService;
+    }
+
     /**
      * Generate shortened url from token
      *
@@ -30,6 +48,11 @@ class ShortenedLinkGenerator
      */
     public function generateToken($originalUrl, $tokenLength = 6): string
     {
-        return substr(hash('sha256', $originalUrl . microtime()), 0, $tokenLength);
+        do {
+            $token = substr(hash('sha256', $originalUrl . microtime()), 0, $tokenLength);
+            $link  = $this->linkService->getLinkOrNullByToken($token);
+        } while (null !== $link);
+
+        return $token;
     }
 }

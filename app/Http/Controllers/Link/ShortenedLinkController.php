@@ -66,7 +66,7 @@ class ShortenedLinkController extends Controller
     public function delete($linkId)
     {
         $link = $this->linkService->findById($linkId);
-        $this->guardCanEdit($link);
+        $this->guardCanDelete($link);
         $this->linkService->delete($link);
 
         flash(sprintf('Link %s successfully deleted', $link->shortened_url), 'success');
@@ -77,7 +77,7 @@ class ShortenedLinkController extends Controller
     /**
      * @param Link $link
      */
-    protected function guardCanEdit(Link $link)
+    protected function guardCanDelete(Link $link)
     {
         /** @var User $currentUser */
         $currentUser = Auth::user();
